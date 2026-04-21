@@ -30,7 +30,7 @@ body {
     margin: 0 auto;
 }
 
-/* Top Header */
+
 .header {
     background: var(--card-bg);
     border-radius: 8px;
@@ -74,7 +74,7 @@ body {
     color: #fff;
 }
 
-/* KPI Cards */
+
 .kpi-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -150,7 +150,7 @@ body {
     margin-top: 15px;
 }
 
-/* Main Grid */
+
 .grid-main {
     display: grid;
     grid-template-columns: 1fr 2.5fr;
@@ -182,7 +182,7 @@ body {
     align-items: center;
 }
 
-/* Control Panel Styles */
+
 .mode-container {
     background: rgba(0,0,0,0.25);
     padding: 12px;
@@ -295,7 +295,7 @@ input[type="range"] {
     background: rgba(255,255,255,0.08);
 }
 
-/* History Table */
+
 .table-container {
     overflow-x: auto;
 }
@@ -331,7 +331,7 @@ tr:hover {
 .badge-warning { background: rgba(255, 215, 0, 0.15); color: var(--accent-yellow); }
 .badge-danger { background: rgba(255, 61, 0, 0.15); color: var(--accent-red); }
 
-/* Alerts List */
+
 .alerts-list {
     list-style: none;
 }
@@ -370,7 +370,7 @@ tr:hover {
     font-size: 0.75rem;
 }
 
-/* Filter buttons for reports */
+
 .filter-btn {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid var(--card-border);
