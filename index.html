@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>PTAP Samaniego - Dashboard Monitoreo</title>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>PTAP Samaniego Monitoreo De Agua</h1>
+            <div class="header-actions">
+                <button class="btn-header active" id="btn-resumen" onclick="switchView('resumen')">Resumen</button>
+                <button class="btn-header" id="btn-reportes" onclick="switchView('reportes')">Reportes</button>
+                <button class="btn-header" id="btn-configuracion"
+                    onclick="switchView('configuracion')">Configuración</button>
+            </div>
+        </div>
+
+        <div id="view-resumen">
+            <!-- KPIs Row -->
+            <div class="kpi-row">
+                <!-- pH -->
+                <div class="kpi-card kpi-cyan">
+                    <div class="kpi-card-header">
+                        <span class="kpi-card-title">pH</span>
+                        <i class="fas fa-info-circle kpi-info-icon" title="Potencial de Hidrógeno"></i>
+                    </div>
+                    <div class="kpi-value-container">
+                        <span class="kpi-value" id="phVal">0.00</span>
+                    </div>
+                    <div class="kpi-subtitle">
+                        <span class="stat-arrow" id="phIndicator"><i class="fas fa-caret-up"></i> Norma: 6.5 -
+                            8.5</span>
+                        <span style="margin-left: auto;" id="phStatusBadge" class="badge">NORMAL</span>
+                    </div>
+                    <div class="sparkline-container">
+                        <canvas id="sparkPh"></canvas>
+                    </div>
+                </div>
+
+                <!-- Cloro -->
+                <div class="kpi-card kpi-magenta">
+                    <div class="kpi-card-header">
+                        <span class="kpi-card-title">Niveles De Cloro</span>
+                        <i class="fas fa-info-circle kpi-info-icon" title="Cloro presente en el agua"></i>
+                    </div>
+                    <div class="kpi-value-container">
+                        <span class="kpi-value" id="cloroVal">0.00</span><span class="kpi-unit">mg/L</span>
+                    </div>
+                    <div class="kpi-subtitle">
+                        <span class="stat-arrow" id="cloroIndicator"><i class="fas fa-caret-down"></i> Norma: 0.5 -
+                            2.0</span>
+                        <span style="margin-left: auto;" id="cloroStatusBadge" class="badge">BAJO</span>
+                    </div>
+                    <div class="sparkline-container">
+                        <canvas id="sparkCloro"></canvas>
+                    </div>
+                </div>
+
+                <!-- Turbidez -->
+                <div class="kpi-card kpi-yellow">
+                    <div class="kpi-card-header">
+                        <span class="kpi-card-title">Turbidez</span>
+                        <i class="fas fa-info-circle kpi-info-icon" title="Medida de partículas suspendidas"></i>
+                    </div>
+                    <div class="kpi-value-container">
+                        <span class="kpi-value" id="turbVal">0.00</span><span class="kpi-unit">NTU</span>
+                    </div>
+                    <div class="kpi-subtitle">
+                        <span class="stat-arrow" id="turbIndicator"><i class="fas fa-caret-up"></i> Norma: &lt;
+                            1.0</span>
+                        <span style="margin-left: auto;" id="turbStatusBadge" class="badge">ALTO</span>
+                    </div>
+                    <div class="sparkline-container">
+                        <canvas id="sparkTurb"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Chart and Controls -->
+            <div class="grid-main">
+                <!-- Control Panel -->
+                <div class="panel">
+                    <div class="panel-title">
+                        Control de Medición
+                        <i class="fas fa-sliders-h" style="color: var(--text-muted)"></i>
+                    </div>
+
+                    <div class="mode-container">
+                        <label class="radio-label active" id="labelManual">
+                            <input type="radio" name="simulMode" id="modeManual" value="manual" checked>
+                            Modo Manual
+                        </label>
+                        <label class="radio-label" id="labelAuto">
+                            <input type="radio" name="simulMode" id="modeAuto" value="auto">
+                            Modo Automático
+                        </label>
+                    </div>
+
+                    <div class="sliders-group">
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span>pH (0-14)</span>
+                                <span class="val" id="phNum">6.80</span>
+                            </div>
+                            <input type="range" id="phSlider" min="0" max="14" step="0.05" value="6.80">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span>Cloro (mg/L)</span>
+                                <span class="val" id="cloroNum">0.30</span>
+                            </div>
+                            <input type="range" id="cloroSlider" min="0" max="4.0" step="0.02" value="0.30">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-header">
+                                <span>Turbidez (NTU)</span>
+                                <span class="val" id="turbNum">2.10</span>
+                            </div>
+                            <input type="range" id="turbidezSlider" min="0" max="5.0" step="0.05" value="2.10">
+                        </div>
+                    </div>
+
+                    <button class="reset-btn" id="resetBtn">Restablecer Valores Base</button>
+                    <div id="timestampLabel"
+                        style="margin-top: 15px; font-size: 0.75rem; color: var(--text-muted); text-align: center;">
+                    </div>
+                </div>
+
+                <!-- Trends Chart -->
+                <div class="panel" style="position: relative;">
+                    <div class="panel-title">
+                        Tendencia de Calidad del Agua
+                        <i class="fas fa-chart-line" style="color: var(--text-muted)"></i>
+                    </div>
+                    <div style="height: 350px;">
+                        <canvas id="mainTrendChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History and Alerts -->
+            <div class="grid-bottom">
+                <!-- Historical Table -->
+                <div class="panel">
+                    <div class="panel-title">
+                        Historial de Lecturas Recientes
+                        <i class="fas fa-table" style="color: var(--text-muted)"></i>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>pH</th>
+                                    <th>Cloro (mg/L)</th>
+                                    <th>Turbidez (NTU)</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyTableBody">
+                                <!-- Generado dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Active Alerts -->
+                <div class="panel">
+                    <div class="panel-title">
+                        Alertas del Sistema
+                        <i class="fas fa-bell" style="color: var(--text-muted)"></i>
+                    </div>
+                    <ul class="alerts-list" id="alertsList">
+                        <!-- Generado dinámicamente -->
+                    </ul>
+                </div>
+            </div>
+        </div> <!-- End view-resumen -->
+
+        <!-- View Reportes -->
+        <div id="view-reportes" style="display: none;">
+            <div class="kpi-row">
+                <div class="kpi-card" style="border-left: 4px solid var(--accent-cyan);">
+                    <div class="kpi-card-header"><span class="kpi-card-title">Reportes por Hora</span> <i
+                            class="fas fa-clock kpi-info-icon"></i></div>
+                    <div class="kpi-value-container"><span class="kpi-value">14</span><span class="kpi-unit">alertas
+                            (promedio)</span></div>
+                    <div class="kpi-subtitle">Fluctuación normal del sistema</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid var(--accent-magenta);">
+                    <div class="kpi-card-header"><span class="kpi-card-title">Reportes Diarios</span> <i
+                            class="fas fa-calendar-day kpi-info-icon"></i></div>
+                    <div class="kpi-value-container"><span class="kpi-value">84</span><span class="kpi-unit">eventos
+                            hoy</span></div>
+                    <div class="kpi-subtitle">Últimas 24 horas</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid var(--accent-yellow);">
+                    <div class="kpi-card-header"><span class="kpi-card-title">Reportes Semanales</span> <i
+                            class="fas fa-calendar-week kpi-info-icon"></i></div>
+                    <div class="kpi-value-container"><span class="kpi-value">512</span><span
+                            class="kpi-unit">registros</span></div>
+                    <div class="kpi-subtitle">Tendencia estable</div>
+                </div>
+                <div class="kpi-card" style="border-left: 4px solid var(--accent-green);">
+                    <div class="kpi-card-header"><span class="kpi-card-title">Promedio Mensual</span> <i
+                            class="fas fa-calendar-alt kpi-info-icon"></i></div>
+                    <div class="kpi-value-container"><span class="kpi-value">1,890</span><span
+                            class="kpi-unit">registros este mes</span></div>
+                    <div class="kpi-subtitle">Mes en curso</div>
+                </div>
+            </div>
+
+            <!-- Botones Filtrado para ver Info Específica -->
+            <div style="margin-bottom: 20px;">
+                <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem;">Selecciona una métrica
+                    para ver los detalles del reporte por hora, día, semana y mes:</p>
+                <div style="display: flex;">
+                    <button id="btn-rep-ph" class="filter-btn active-ph" onclick="showReportDetails('ph')">Detalles del
+                        pH</button>
+                    <button id="btn-rep-cloro" class="filter-btn" onclick="showReportDetails('cloro')">Detalles del
+                        Cloro</button>
+                    <button id="btn-rep-turb" class="filter-btn" onclick="showReportDetails('turb')">Detalles de la
+                        Turbidez</button>
+                </div>
+            </div>
+
+            <!-- Panel de detalles métricos interactivos -->
+            <div class="panel">
+                <div class="panel-title">Estadísticas Detalladas de la Métrica</div>
+                <div
+                    style="height: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); text-align: center; border: 1px dashed var(--card-border); border-radius: 8px; padding: 20px;">
+                    <i id="report-detail-icon" class="fas fa-vial"
+                        style="font-size: 3.5rem; margin-bottom: 20px; color: var(--accent-cyan);"></i>
+                    <p id="report-detail-title" style="font-size: 1.2rem; color: var(--text-main); font-weight: 600;">
+                        Histórico Detallado de pH</p>
+                    <div id="report-detail-subtitle"
+                        style="font-size: 0.95rem; margin-top: 15px; max-width: 500px; color: var(--text-muted);">
+                        En las últimas 24 horas, el pH ha oscilado entre <b>6.8</b> y <b>7.2</b>.<br /><br />
+                        <ul style="padding-left: 20px; line-height: 1.8; text-align: left;">
+                            <li style="color: var(--text-main);">Valor máximo ayer: 7.3 a las 14:00</li>
+                            <li style="color: var(--text-main);">Media de la semana pasada: 7.0</li>
+                            <li style="color: var(--text-main);">Sin anomalías críticas reportadas en el mes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Configuración -->
+        <div id="view-configuracion" style="display: none;">
+            <div class="panel">
+                <div class="panel-title">Configuración del Sistema</div>
+                <div style="padding: 10px 0; color: var(--text-main);">
+                    <p style="margin-bottom: 25px; color: var(--text-muted);">Ajusta los parámetros operativos del
+                        dashboard y umbrales de alerta.</p>
+
+                    <div class="sliders-group" style="max-width: 600px; margin-bottom: 30px;">
+                        <h4 style="margin-bottom: 5px; color: var(--accent-cyan);">Umbrales Clínicos de Alerta</h4>
+                        <div class="slider-item">
+                            <div class="slider-header"><span>Rango de pH normal</span><span class="val">6.5 - 8.5</span>
+                            </div>
+                            <input type="range" disabled value="50" style="opacity: 0.5; cursor: not-allowed;">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-header"><span>Cloro Residual Ideal (mg/L)</span><span class="val">0.5 -
+                                    2.0</span></div>
+                            <input type="range" disabled value="50" style="opacity: 0.5; cursor: not-allowed;">
+                        </div>
+                        <div class="slider-item">
+                            <div class="slider-header"><span>Límite Turbidez (NTU)</span><span class="val">1.0
+                                    MAX</span></div>
+                            <input type="range" disabled value="50" style="opacity: 0.5; cursor: not-allowed;">
+                        </div>
+                    </div>
+
+                    <button class="btn-header" disabled style="opacity: 0.5; cursor: not-allowed;"><i
+                            class="fas fa-save"></i> Guardar Cambios</button>
+                    <p style="margin-top: 15px; font-size: 0.8rem; color: var(--accent-yellow);"><i
+                            class="fas fa-lock"></i> Se requieren privilegios de Administrador para realizar cambios.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripting -->
+    <script src="script.js"></script>
+</body>
+
+</html>
