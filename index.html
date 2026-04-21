@@ -5,19 +5,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>PTAP Samaniego - Dashboard Monitoreo</title>
-    <!-- Chart.js CDN -->
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    <!-- Font Awesome -->
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- Google Fonts -->
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Stylesheet -->
+    
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="dashboard-container">
-        <!-- Header -->
+        
         <div class="header">
             <h1>PTAP Samaniego Monitoreo De Agua</h1>
             <div class="header-actions">
@@ -29,9 +29,9 @@
         </div>
 
         <div id="view-resumen">
-            <!-- KPIs Row -->
+            
             <div class="kpi-row">
-                <!-- pH -->
+                
                 <div class="kpi-card kpi-cyan">
                     <div class="kpi-card-header">
                         <span class="kpi-card-title">pH</span>
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <!-- Cloro -->
+                
                 <div class="kpi-card kpi-magenta">
                     <div class="kpi-card-header">
                         <span class="kpi-card-title">Niveles De Cloro</span>
@@ -69,7 +69,7 @@
                     </div>
                 </div>
 
-                <!-- Turbidez -->
+                
                 <div class="kpi-card kpi-yellow">
                     <div class="kpi-card-header">
                         <span class="kpi-card-title">Turbidez</span>
@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <!-- Main Chart and Controls -->
+            
             <div class="grid-main">
                 <!-- Control Panel -->
                 <div class="panel">
@@ -139,7 +139,7 @@
                     </div>
                 </div>
 
-                <!-- Trends Chart -->
+                
                 <div class="panel" style="position: relative;">
                     <div class="panel-title">
                         Tendencia de Calidad del Agua
@@ -151,9 +151,9 @@
                 </div>
             </div>
 
-            <!-- History and Alerts -->
+            
             <div class="grid-bottom">
-                <!-- Historical Table -->
+                
                 <div class="panel">
                     <div class="panel-title">
                         Historial de Lecturas Recientes
@@ -171,26 +171,26 @@
                                 </tr>
                             </thead>
                             <tbody id="historyTableBody">
-                                <!-- Generado dinámicamente -->
+                                
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <!-- Active Alerts -->
+                
                 <div class="panel">
                     <div class="panel-title">
                         Alertas del Sistema
                         <i class="fas fa-bell" style="color: var(--text-muted)"></i>
                     </div>
                     <ul class="alerts-list" id="alertsList">
-                        <!-- Generado dinámicamente -->
+                        
                     </ul>
                 </div>
             </div>
-        </div> <!-- End view-resumen -->
+        </div> 
 
-        <!-- View Reportes -->
+        
         <div id="view-reportes" style="display: none;">
             <div class="kpi-row">
                 <div class="kpi-card" style="border-left: 4px solid var(--accent-cyan);">
@@ -223,7 +223,7 @@
                 </div>
             </div>
 
-            <!-- Botones Filtrado para ver Info Específica -->
+            
             <div style="margin-bottom: 20px;">
                 <p style="margin-bottom: 12px; color: var(--text-muted); font-size: 0.95rem;">Selecciona una métrica
                     para ver los detalles del reporte por hora, día, semana y mes:</p>
@@ -237,7 +237,7 @@
                 </div>
             </div>
 
-            <!-- Panel de detalles métricos interactivos -->
+            
             <div class="panel">
                 <div class="panel-title">Estadísticas Detalladas de la Métrica</div>
                 <div
@@ -259,7 +259,7 @@
             </div>
         </div>
 
-        <!-- View Configuración -->
+        
         <div id="view-configuracion" style="display: none;">
             <div class="panel">
                 <div class="panel-title">Configuración del Sistema</div>
@@ -296,7 +296,7 @@
         </div>
     </div>
 
-    <!-- Scripting -->
+    
     <script src="script.js"></script>
 </body>
 
