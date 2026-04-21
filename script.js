@@ -37,13 +37,13 @@ function showReportDetails(metric) {
     }
 }
 
-// Data and State
+
 let currentMode = 'manual';
 let autoIntervalId = null;
 const maxHistory = 15;
-let dataLog = []; // {time, ph, cloro, turb}
+let dataLog = []; 
 
-// Theme colors
+
 const colors = {
     cyan: '#00e5ff',
     cyanFill: 'rgba(0, 229, 255, 0.1)',
@@ -55,7 +55,7 @@ const colors = {
     text: '#8b9bb4'
 };
 
-// DOM Elements
+
 const sliders = {
     ph: document.getElementById('phSlider'),
     cloro: document.getElementById('cloroSlider'),
@@ -77,15 +77,15 @@ const badges = {
     turb: document.getElementById('turbStatusBadge')
 };
 
-// Charts instances
+
 let mainChart, sparkPh, sparkCloro, sparkTurb;
 
-// Initialize Charts
+
 function initCharts() {
     Chart.defaults.color = colors.text;
     Chart.defaults.font.family = 'Inter';
 
-    // Sparkline shared options
+    
     const sparkOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -182,7 +182,7 @@ function getTimeString() {
     return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
-// Generate initial fake data
+
 function generateInitialData() {
     let lastPh = 7.0; let lastCloro = 1.0; let lastTurb = 0.5;
     for(let i = maxHistory; i > 0; i--) {
@@ -200,7 +200,7 @@ function generateInitialData() {
     renderTable();
 }
 
-// Logic for value assessment
+
 function evaluateStatus(ph, cloro, turb) {
     let phStatus = (ph >= 6.5 && ph <= 8.5) ? 'normal' : (ph < 6.5 ? 'bajo' : 'alto');
     let clStatus = (cloro >= 0.5 && cloro <= 2.0) ? 'normal' : (cloro < 0.5 ? 'bajo' : 'alto');
@@ -213,9 +213,9 @@ function evaluateStatus(ph, cloro, turb) {
     };
 }
 
-// Helper to update DOM
+
 function updateDashboardUI(ph, cloro, turb, pushToHistory = true) {
-    // Update inputs and spans
+    
     sliders.ph.value = ph.toFixed(2);
     sliders.cloro.value = cloro.toFixed(2);
     sliders.turb.value = turb.toFixed(2);
@@ -229,7 +229,7 @@ function updateDashboardUI(ph, cloro, turb, pushToHistory = true) {
 
     const st = evaluateStatus(ph, cloro, turb);
     
-    // Update badges
+    
     const setBadge = (el, info) => {
         el.innerText = info.label;
         el.className = 'badge';
@@ -241,7 +241,7 @@ function updateDashboardUI(ph, cloro, turb, pushToHistory = true) {
     setBadge(badges.cloro, st.cloro);
     setBadge(badges.turb, st.turb);
 
-    // Update Alerts
+    
     updateAlerts(ph, cloro, turb, st);
     
     document.getElementById('timestampLabel').innerText = `Última actualización: ${getTimeString()}`;
@@ -329,7 +329,7 @@ function updateChartsWithData() {
     mainChart.update();
 }
 
-// Sliders Listeners for Manual Mode
+
 function onSliderInput() {
     const ph = parseFloat(sliders.ph.value);
     const cl = parseFloat(sliders.cloro.value);
@@ -341,12 +341,12 @@ sliders.ph.addEventListener('input', onSliderInput);
 sliders.cloro.addEventListener('input', onSliderInput);
 sliders.turb.addEventListener('input', onSliderInput);
 
-// Reset Button
+
 document.getElementById('resetBtn').addEventListener('click', () => {
     updateDashboardUI(7.0, 1.0, 0.4, true);
 });
 
-// Auto Mode Logic (Random Walk)
+
 let currentVals = { ph: 7.0, cl: 1.0, tb: 0.5 };
 function autoSimulationStep() {
     const nextValue = (curr, min, max, target, vol) => {
@@ -365,7 +365,7 @@ function autoSimulationStep() {
     updateDashboardUI(currentVals.ph, currentVals.cl, currentVals.tb, true);
 }
 
-// Mode Switching
+
 const radioManual = document.getElementById('modeManual');
 const radioAuto = document.getElementById('modeAuto');
 const labelManual = document.getElementById('labelManual');
@@ -401,7 +401,7 @@ function switchMode(e) {
 radioManual.addEventListener('change', switchMode);
 radioAuto.addEventListener('change', switchMode);
 
-// Startup
+
 window.onload = () => {
     initCharts();
     generateInitialData();
